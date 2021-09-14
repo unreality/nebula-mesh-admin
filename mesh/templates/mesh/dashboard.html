@@ -1,0 +1,19 @@
+{% extends 'mesh/base.html' %}
+{% load tz %}
+{% block page_content %}
+    <h2>Dashboard</h2>
+    <hr>
+    <div class="card" style="width: 48rem;">
+      <div class="card-body">
+        <h5 class="card-title">Mesh Certificate Information</h5>
+        <hr>
+        <ul class="list-group">
+          <li class="list-group-item"><strong>Mesh Name:</strong> {{ cert.Name }}</li>
+          <li class="list-group-item"><strong>CA Fingerprint:</strong> {{ cert.Fingerprint }}</li>
+          <li class="list-group-item"><strong>Subnet:</strong> {{ subnet }}</li>
+          <li class="list-group-item"><strong>Not Before:</strong> {{ notbefore | localtime}}</li>
+          <li class="list-group-item"><strong>Not After:</strong> {{ notafter | localtime }}</li>
+        </ul>
+      </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'mesh/base.html' %}
+{% load tz %}
+
+{% block page_content %}
+    <h2>Lighthouses</h2>
+    <hr>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="create">
+      <div class="mb-3">
+        <label for="lighthouse_ip" class="form-label">IP</label>
+        <input type="text" class="form-control" id="lighthouse_ip" name="lighthouse_ip">
+        <div id="lighthouse_ip_help" class="form-text">Internal IP</div>
+      </div>
+      <div class="mb-3">
+        <label for="lighthouse_extip" class="form-label">External IP</label>
+        <input type="text" class="form-control" id="lighthouse_extip" name="lighthouse_extip">
+        <div id="lighthouse_extip_help" class="form-text">External static IP. Specify multiple addresses separated by commas.</div>
+      </div>
+      <div class="mb-3">
+        <label for="lighthouse_name" class="form-label">Name</label>
+        <input type="text" class="form-control" id="lighthouse_name"  name="lighthouse_name">
+        <div id="emailHelp" class="form-text">Descriptive name.</div>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Lighthouse</button>
+    </form>
+
+    <hr>
+    {% for lighthouse in lighthouses %}
+    <ul class="list-group mb-3">
+      <li class="list-group-item">
+      <div class="row align-items-end">
+            <div class="col-10">
+              <strong>Lighthouse Name:</strong> {{ lighthouse.name }}
+            </div>
+            <div class="col-2">
+              <form style="text-align: right" method="post" id="delete-{{ h.id }}">
+                  {% csrf_token %}
+                  <input type="hidden" name="id" value="{{ lighthouse.id }}">
+                  <button type="submit" class="btn btn-danger btn-sm center">Delete</button>
+              </form>
+            </div>
+      </div>
+      </li>
+      <li class="list-group-item"><strong>IP:</strong>  {{ lighthouse.ip }}</li>
+      <li class="list-group-item"><strong>External IP:</strong>  {{ lighthouse.external_ip }}</li>
+    </ul>
+    {% empty %}
+    <div class="alert alert-danger" role="alert">No lighthouses found.</div>
+    {% endfor %}
+
+{% endblock %}
+

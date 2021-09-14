@@ -1,0 +1,66 @@
+{% extends 'mesh/base.html' %}
+{% load tz %}
+
+{% block page_content %}
+    <h2>Enroll Host</h2>
+    <hr>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{message | safe}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" class="mb-4">
+    <h4>Create enrollment token</h4>
+      {% csrf_token %}
+      <input type="hidden" name="action" value="create">
+      <div class="mb-3">
+        <label for="host_ip" class="form-label">IP</label>
+        <input type="text" class="form-control" id="host_ip" name="host_ip">
+      </div>
+      <div class="mb-3">
+        <label for="host_expires" class="form-label">Expires</label>
+        <input type="number" class="form-control" id="host_expires" name="host_expires">
+        <div id="host_expires_help" class="form-text">Expiry seconds ie "3600" means the host will expire in an hr.</div>
+      </div>
+      <div class="mb-3">
+        <label for="host_name" class="form-label">Hostname</label>
+        <input type="text" class="form-control" id="host_name"  name="host_name">
+      </div>
+      <div class="mb-3">
+        <label for="host_groups" class="form-label">Groups</label>
+        <input type="text" class="form-control" id="host_groups"  name="host_groups">
+        <div id="host_groups_help" class="form-text">Comma-delimited list of groups.</div>
+      </div>
+      <button type="submit" class="btn btn-primary">Create Token</button>
+    </form>
+
+    <hr>
+    {% for enrol_otp in enrol_list %}
+    <ul class="list-group mb-3">
+      <li class="list-group-item">
+      <div class="row align-items-end">
+            <div class="col-10">
+              <strong>Host Name:</strong> {{ enrol_otp.name }}
+            </div>
+            <div class="col-2">
+              <form style="text-align: right" method="post" id="delete-{{ h.id }}">
+                  {% csrf_token %}
+                  <input type="hidden" name="id" value="{{ enrol_otp.id }}">
+                  <button type="submit" class="btn btn-danger btn-sm center">Delete</button>
+              </form>
+            </div>
+      </div>
+      </li>
+      <li class="list-group-item"><strong>IP:</strong> {{ enrol_otp.ip }}</li>
+      <li class="list-group-item"><strong>OTP Expires:</strong> {{ enrol_otp.otp_expires | localtime }}</li>
+    </ul>
+    {% empty %}
+    <div class="alert alert-danger" role="alert">No OTP tokens found.</div>
+    {% endfor %}
+
+{% endblock %}
+

@@ -1,0 +1,5 @@
+Django
+protobuf
+cryptography
+requests
+python-jose

@@ -1,0 +1,45 @@
+{% extends 'mesh/base.html' %}
+{% block page_content %}
+    <h2>Blocklist</h2>
+    <hr>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form class="row g-3 mb-3" method="post">
+        <div class="col-8">
+            <input class="form-control form-control-sm" type="text" placeholder="Fingerprint" aria-label=".form-control-sm example">
+        </div>
+        <div class="col-auto">
+            <input type="hidden" name="action" value="create">
+            <button type="submit" class="btn btn-primary btn-sm">Add</button>
+        </div>
+    </form>
+    <ul class="list-group">
+     {% for blockedhost in blocklist %}
+      <li class="list-group-item">
+            <div class="row align-items-end">
+                <div class="col-10">
+                  Fingerprint: {{ blockedhost.fingerprint }}
+                </div>
+                <div class="col-2">
+                  <form style="text-align: right" method="post">
+                      {% csrf_token %}
+                      <input type="hidden" name="action" value="delete">
+                      <input type="hidden" name="id" value="{{ blockedhost.id }}">
+                      <button type="submit" class="btn btn-danger btn-sm center">Delete</button>
+                  </form>
+                </div>
+          </div>
+      </li>
+    {% empty %}
+     <div class="alert alert-info" role="alert">No hosts on the blocklist.</div>
+    {% endfor %}
+
+    </ul>
+{% endblock %}

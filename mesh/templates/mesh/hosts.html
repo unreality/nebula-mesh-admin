@@ -1,0 +1,53 @@
+{% extends 'mesh/base.html' %}
+{% load tz %}
+
+{% block page_content %}
+    <h2>Hosts</h2>
+    <hr>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
+
+    <small>Note that deleting hosts here wont disable their ability to connect to the mesh.</small>
+    {% for h in hosts %}
+    <ul class="list-group mb-3 mt-3">
+      <li class="list-group-item">
+      <div class="row align-items-end">
+            <div class="col-10">
+              <strong>Host Name:</strong> {{ h.name }}
+            </div>
+            <div class="col-1">
+              <form style="text-align: right" method="post" action="{% url "blocklist" %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="fingerprint" value="{{ h.fingerprint }}">
+                  <input type="hidden" name="action" value="create">
+                  <button type="submit" class="btn btn-primary btn-sm center">Block</button>
+              </form>
+            </div>
+            <div class="col-1">
+              <form style="text-align: right" method="post" id="delete-{{ h.id }}">
+                  {% csrf_token %}
+                  <input type="hidden" name="id" value="{{ h.id }}">
+                  <input type="hidden" name="action" value="delete">
+                  <button type="submit" class="btn btn-danger btn-sm center">Delete</button>
+              </form>
+            </div>
+      </div>
+      </li>
+      <li class="list-group-item"><strong>Host IP:</strong>  {{ h.ip }}</li>
+      <li class="list-group-item"><strong>Host Fingerprint:</strong>  {{ h.fingerprint }}</li>
+      <li class="list-group-item"><strong>Allocation expires:</strong>  {{ h.expires | localtime  }} {% if h.expired %}<span class="badge bg-danger">Expired</span>{% endif %}</li>
+    </ul>
+    {% empty %}
+    <div class="alert alert-info" role="alert">No hosts found.</div>
+    {% endfor %}
+
+{% endblock %}
+

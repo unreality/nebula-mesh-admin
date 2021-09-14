@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Nebula Mesh Admin{% endblock %}</title>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+
+
+        {% block extrahead %}{% endblock %}
+    </head>
+
+   {% block body_content %}
+    <body>
+        <main style="display: flex;">
+
+            <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px; height: 100vh;">
+                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                  <i class="bi bi-gear-wide-connected" style="font-size: 2rem"></i>
+                  <span class="fs-5 p-2">Nebula Mesh Admin</span>
+                </a>
+                <hr>
+                <ul class="nav nav-pills flex-column mb-auto">
+                  <li class="nav-item">
+                    <a href="{% url "dashboard" %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% else %}text-white{% endif %}">
+                      <i class="bi bi-house"></i>
+                      Dashboard
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url "hosts" %}" class="nav-link {% if request.resolver_match.url_name == 'hosts' %}active{% else %}text-white{% endif %}">
+                        <i class="bi bi-diagram-3"></i>
+                        Hosts
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url "lighthouses" %}" class="nav-link {% if request.resolver_match.url_name == 'lighthouses' %}active{% else %}text-white{% endif %}">
+                      <i class="bi bi-globe2"></i>
+                      Lighthouses
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url "blocklist" %}" class="nav-link {% if request.resolver_match.url_name == 'blocklist' %}active{% else %}text-white{% endif %}">
+                      <i class="bi bi-bricks"></i>
+                      Blocklist
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url "enroll" %}" class="nav-link {% if request.resolver_match.url_name == 'enroll' %}active{% else %}text-white{% endif %}">
+                      <i class="bi bi-plus-square"></i>
+                      Enrol Host
+                    </a>
+                  </li>
+
+                  <li class="pt-4">
+                    <a href="{% url "logout" %}" class="nav-link {% if request.resolver_match.url_name == 'logout' %}active{% else %}text-white{% endif %}">
+                      <i class="bi bi-box-arrow-left"></i>
+                      Logout
+                    </a>
+                  </li>
+                </ul>
+
+              </div>
+
+            <div class="d-flex flex-column p-3 bg-light" style="width:100%">
+            {% block page_content %}
+                <h2>Blam</h2>
+            {% endblock %}
+            </div>
+
+
+        </main>
+    </body>
+    {% endblock %}
+
+    {% block extrascripts %}{% endblock %}
+
+</html>
