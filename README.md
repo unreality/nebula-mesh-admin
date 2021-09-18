@@ -12,6 +12,10 @@ docker volume create nebula-vol
 docker run -d -p 8000:8000 -e OIDC_CONFIG_URL=your_oidc_config_url -e OIDC_CLIENT_ID=your_oidc_client_id -v nebula-vol:/persist nebula-mesh-admin:latest
 ```
 
+### Documentation
+
+Until I get around to expanding the documentation, there is a more detailed setup guide at [https://blog.unreality.xyz/post/nebula-sso/](https://blog.unreality.xyz/post/nebula-sso/)
+
 ### Environment settings
 
 Required variables:
